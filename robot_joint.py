@@ -19,6 +19,9 @@ class PolyRect:
         # Returns True if rotations 
         self.rotation = math.radians(val) if degrees else val
 
+    def move(self, x:float=0, y:float=0) -> None:
+        self.pos[0] = x; self.pos[1] = y
+
     def move_ip(self, x: float = 0, y: float = 0) -> None:
         self.pos[0] += x; self.pos[1] += y
 
@@ -58,8 +61,10 @@ class RobotJoint: # Has no image
         pass
 
     def update_state(self, time_step : float = 1) -> None:
+        print(f"State prior to update:\n{self.state}")
         self.state[0] += self.state[1] * time_step
-        self.move(self.state[0][0], self.state[0][1])
+        self.move(self.state[1][0], self.state[1][1])
+        print(f"State after update:\n{self.state}")
 
     def move(self, x : float = 0, y : float = 0) -> bool: # Tested
         # Return false if it hits something, true if movement is safe.
@@ -80,6 +85,7 @@ class RobotJoint: # Has no image
         lowest_y = find_lowest(corners[:, 1])
         highest_x = find_highest(corners[:, 0])
         highest_y = find_highest(corners[:, 1])
+        print(f"Printing corners:\n{corners}")
         if lowest_x < 0 :
             x = -lowest_x # Becomes positive
             self.state[1][0] *= -1 if self.state[1][0] < 0 else 1
