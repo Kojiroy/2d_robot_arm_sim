@@ -27,6 +27,7 @@ while running:
     fpsClock.tick(60)
     for limb in robot_limbs:
         limb.update_state(1)
+        limb.rotate(1)
 
     display.fill(BG)
     for event in pygame.event.get():

@@ -17,7 +17,8 @@ class PolyRect:
 
     def rotate(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
         # Returns True if rotations 
-        self.rotation = math.radians(val) if degrees else val
+        self.rotation += math.radians(val) if degrees else val
+        self.rotation %= 2 * math.pi
 
     def move(self, x:float=0, y:float=0) -> None:
         self.pos[0] = x; self.pos[1] = y
@@ -28,13 +29,16 @@ class PolyRect:
     def update_points(self) -> None:
         h:float = math.hypot(self.size[1],self.size[0])
         feta:float = 0.0
-        # print(f"Pos: {self.pos}\nSize: {self.size}")
-        for i in range(4):
+        rotation_mat = np.array([[math.cos(self.rotation), -math.sin(self.rotation)], [math.sin(self.rotation), math.cos(self.rotation)]])
+
+        for i in range(4): #TODO: Do the math by hand without iterations
             # print(f"Printing state of corner[{i}]")
-            feta = math.atan((self.size[1])/self.size[0]) + self.rotation + (math.pi if i%3 else 0)
+            feta = math.atan((self.size[1])/self.size[0]) + (math.pi if i%3 else 0)
             feta *= -1 if i%2 else 1
-            # print(feta)
-            self.points[i] = [h*math.cos(feta) + self.pos[0], h*math.sin(feta) + self.pos[1]]
+            print(f"feta is {feta}")
+            relative_point = np.array([h*math.cos(feta), h*math.sin(feta)])
+            rotated_point = np.matmul(rotation_mat, relative_point.T)
+            self.points[i] = [rotated_point[0] + self.pos[0], rotated_point[1] + self.pos[1]]
             # print(self.points[i])
 
     def draw(self, screen:surface.Surface) -> None:
@@ -56,9 +60,12 @@ class RobotJoint: # Has no image
     def set_vel(self, vel : np.array([0,0])) -> None:
         self.state[1] = vel
 
+    def set_rot(self, degrees: float=0.0) -> None:
+        self.rotate(degrees)
+
     def rotate(self, degrees : float = 0.0) -> None: # TODO: Complete Rotation
         # Rotates an object relative to its current relative position
-        pass
+        self.rect.rotate(degrees)
 
     def update_state(self, time_step : float = 1) -> None:
         print(f"State prior to update:\n{self.state}")
