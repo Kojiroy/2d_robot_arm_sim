@@ -16,11 +16,12 @@ fpsClock = pygame.time.Clock()
 
 pygame.display.set_caption("Robot Arm")
 
-test_limb = RobotJoint(name="test", pos=np.array([150,150]), origin=np.array([0,0]), size=np.array([10,30]), boundary=np.array([DISPLAY_WIDTH,DISPLAY_HEIGHT]))
+test_limb = RobotJoint(name="test", pos=np.array([150,150]), origin=np.array([0.1,0.1]), size=np.array([10,100]), boundary=np.array([DISPLAY_WIDTH,DISPLAY_HEIGHT]), color=[10,180,200, 20])
+test_limb2 = RobotJoint(name="test", pos=np.array([150,150]), origin=np.array([0.5,0.5]), size=np.array([100,100]), boundary=np.array([DISPLAY_WIDTH,DISPLAY_HEIGHT]), color=(100,100,100,10))
 
-test_limb.set_vel(np.array([1,2]))
+test_limb2.set_vel(np.array([1,2]))
 
-robot_limbs = [test_limb]
+robot_limbs = [test_limb2, test_limb]
 
 while running:
     # Update limb states
