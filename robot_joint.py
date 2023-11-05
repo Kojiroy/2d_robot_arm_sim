@@ -16,7 +16,7 @@ class RobotJoint:
         self.screen = screen
         self.parent = parent
         self.state = np.array([[pos[0],pos[1]], [0,0], [0,0]], dtype=float) # [pos, vel, accel]
-        self.motor = Motor(pos, screen, parent=parent)
+        self.motor = Motor(pos=pos, screen=screen, parent=parent)
         self.arm = Arm(screen, parent=self.motor)
         self.children = [self.motor, self.arm] # The last index is the edge
         self.edge = self.arm.get_endpoint()
