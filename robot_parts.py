@@ -19,16 +19,19 @@ class BasePart:
         self.abs_origin : np.ndarray
         self.parent = parent
 
-        x_size = find_highest(shape[:,0])-find_lowest(shape[:,0])
-        y_size = find_highest(shape[:,1])-find_lowest(shape[:,1])
-        self.size = np.array([x_size, y_size])
         self.num_points = self.shape.shape[0]
-        self.points = [None] * self.num_points
+        self.points = np.ndarray(shape=(self.num_points,2 ),dtype=float)
         self.update_points()
+        check_points(self.points, self.state, self.boundary)
     
-    def rotate(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
+    def rotate_ip(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
         # Returns True if rotations 
         self.rotation += math.radians(val) if degrees else val
+        self.rotation %= 2 * math.pi
+
+    def rotate(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
+        # Returns True if rotations 
+        self.rotation = math.radians(val) if degrees else val
         self.rotation %= 2 * math.pi
 
     def move_ip(self, x: float = 0, y: float = 0) -> None:
@@ -44,7 +47,8 @@ class BasePart:
         for i in range(self.num_points):
             self.points[i] = np.matmul(shape[i], transf_mat)[0:2]
         self.abs_origin = np.matmul(origin, transf_mat)[0:2]
-        
+        # check_points(self.points, self.state, self.boundary)
+
     def draw(self) -> None:
         self.update_points()
         draw.polygon(self.display, self.color, self.points)
@@ -75,7 +79,7 @@ class BasePart:
                           -self.origin[0] * math.sin(self.rotation) + self.origin[1] * math.cos(self.rotation), 1
                           ]])
         # self.abs_origin = np.matmul()
-        print(f"Parent:\n{parent_transf_mat}\nCur_trans:\n{cur_transf_mat}\nrotation:{self.rotation}")
+        # print(f"Parent:\n{parent_transf_mat}\nCur_trans:\n{cur_transf_mat}\nrotation:{self.rotation}")
         return np.matmul(cur_transf_mat, parent_transf_mat)
 
 class Motor(BasePart):

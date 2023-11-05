@@ -26,7 +26,7 @@ pygame.display.set_caption("Robot Arm")
 # test_limb.set_vel(np.array([-1,-2]))
 # test_limb2.set_vel(np.array([-1,-2]))
 
-robot_arm = RobotArm(np.array([DISPLAY_WIDTH/2,DISPLAY_HEIGHT/2]), display)
+robot_arm = RobotArm(np.array([DISPLAY_WIDTH/2,DISPLAY_HEIGHT]), display)
 # robot_motor = Motor(np.array([0,0]), display)
 # robot_arm = Arm(np.array([DISPLAY_WIDTH,0]), display)
 # robot_base = BasePlate(np.array([DISPLAY_WIDTH,DISPLAY_HEIGHT]), display)
@@ -40,11 +40,38 @@ while running:
     # for limb in robot_limbs:
     #     limb.update_state(1)
     #     limb.rotate(1)
-    robot_arm.rotate(1)
+    # robot_arm.rotate(1)
     display.fill(BG)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                robot_arm.set_angular_rotation(2, 1)
+            elif event.key == pygame.K_DOWN:
+                robot_arm.set_angular_rotation(-2, 1)
+            if event.key == pygame.K_RIGHT:
+                robot_arm.set_angular_rotation(2, 0)
+            elif event.key == pygame.K_LEFT:
+                robot_arm.set_angular_rotation(-2, 0)
+                print("Key Pressed")
+
+        if robot_arm.rotating[1]:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_UP:
+                    robot_arm.set_angular_rotation(0, 1)
+                elif event.key == pygame.K_DOWN:
+                    robot_arm.set_angular_rotation(0, 1)
+        if robot_arm.rotating[0]:
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_RIGHT:
+                    robot_arm.set_angular_rotation(0, 0)
+                elif event.key == pygame.K_LEFT:
+                    print("Key Unpressed")
+                    robot_arm.set_angular_rotation(0, 0)
+
+        
     # pygame.draw.rect(display, ARM_COLOR, pygame.Rect(50, 30, 20, 60), 5)
 
     # for limb in robot_limbs:
@@ -52,6 +79,7 @@ while running:
         # pygame.draw.rect(display, ARM_COLOR, limb.rect)
     
     # robot_motor.draw()
+    robot_arm.update(1)
     robot_arm.draw()
     # robot_base.draw()
 
