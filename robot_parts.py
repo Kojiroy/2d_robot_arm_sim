@@ -24,12 +24,12 @@ class BasePart:
         self.update_points()
         check_points(self.points, self.state, self.boundary)
     
-    def rotate_ip(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
+    def rotate_ip(self, val : float = 0.0, degrees : bool = True) -> bool:
         # Returns True if rotations 
         self.rotation += math.radians(val) if degrees else val
         self.rotation %= 2 * math.pi
 
-    def rotate(self, val : float = 0.0, degrees : bool = True) -> bool: # TODO: Add rotation relative to specific origin
+    def rotate(self, val : float = 0.0, degrees : bool = True) -> bool:
         # Returns True if rotations 
         self.rotation = math.radians(val) if degrees else val
         self.rotation %= 2 * math.pi

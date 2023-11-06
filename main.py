@@ -1,9 +1,7 @@
 import pygame
 import numpy as np
 from pygame.locals import *
-from robot_joint import RobotJoint
 from robot_arm import RobotArm
-from robot_parts import Arm, Motor, BasePlate
 
 running = True
 BG = (200,200,200)
@@ -48,28 +46,28 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_UP:
-                robot_arm.set_angular_rotation(2, 1)
+                robot_arm.set_angular_velocity(2, 1)
             elif event.key == pygame.K_DOWN:
-                robot_arm.set_angular_rotation(-2, 1)
+                robot_arm.set_angular_velocity(-2, 1)
             if event.key == pygame.K_RIGHT:
-                robot_arm.set_angular_rotation(2, 0)
+                robot_arm.set_angular_velocity(2, 0)
             elif event.key == pygame.K_LEFT:
-                robot_arm.set_angular_rotation(-2, 0)
+                robot_arm.set_angular_velocity(-2, 0)
                 print("Key Pressed")
 
         if robot_arm.rotating[1]:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
-                    robot_arm.set_angular_rotation(0, 1)
+                    robot_arm.set_angular_velocity(0, 1)
                 elif event.key == pygame.K_DOWN:
-                    robot_arm.set_angular_rotation(0, 1)
+                    robot_arm.set_angular_velocity(0, 1)
         if robot_arm.rotating[0]:
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_RIGHT:
-                    robot_arm.set_angular_rotation(0, 0)
+                    robot_arm.set_angular_velocity(0, 0)
                 elif event.key == pygame.K_LEFT:
                     print("Key Unpressed")
-                    robot_arm.set_angular_rotation(0, 0)
+                    robot_arm.set_angular_velocity(0, 0)
 
         
     # pygame.draw.rect(display, ARM_COLOR, pygame.Rect(50, 30, 20, 60), 5)

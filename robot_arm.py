@@ -1,9 +1,7 @@
 import numpy as np
-import math
 from pygame import Rect, draw, surface
 
-from utils import check_points
-from robot_parts import BasePlate, Claw, Motor
+from robot_parts import BasePlate, Claw
 from robot_joint import RobotJoint
 
 START_ROTATIONS = [-30,-60]
@@ -24,7 +22,7 @@ class RobotArm:
     def move_ip(self, x: float = 0, y: float = 0) -> None:
         self.state[0][0] += x; self.state[0][1] += y
     
-    def set_angular_rotation(self, angular_vel:float, joint:int=0):
+    def set_angular_velocity(self, angular_vel:float, joint:int=0):
         if angular_vel:
             self.rotating[joint] = True
         self.joints[joint].set_angular_vel(angular_vel)
