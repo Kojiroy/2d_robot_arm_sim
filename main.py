@@ -35,10 +35,6 @@ robot_arm = RobotArm(np.array([DISPLAY_WIDTH/2,DISPLAY_HEIGHT]), display)
 while running:
     # Update limb states
     fpsClock.tick(60)
-    # for limb in robot_limbs:
-    #     limb.update_state(1)
-    #     limb.rotate(1)
-    # robot_arm.rotate(1)
     display.fill(BG)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -69,13 +65,6 @@ while running:
                     print("Key Unpressed")
                     robot_arm.set_angular_velocity(0, 0)
 
-        
-    # pygame.draw.rect(display, ARM_COLOR, pygame.Rect(50, 30, 20, 60), 5)
-
-    # for limb in robot_limbs:
-    #     limb.draw(display)
-        # pygame.draw.rect(display, ARM_COLOR, limb.rect)
-    
     # robot_motor.draw()
     robot_arm.update(1)
     robot_arm.draw()
